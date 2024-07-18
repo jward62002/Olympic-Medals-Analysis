@@ -1,0 +1,115 @@
+library(ggplot2)
+library(dplyr)
+rm(list = ls())
+sum_win_oly <- data.frame(read.csv("summer_winter_olympics.csv"))
+
+
+#renaming
+names(sum_win_oly) <-c("country_code", "country", "num_summer_games_played", "summer_total_medals", "summer_gold", "summer_silver", "summer_bronze", "num_winter_games_played", "winter_gold_medals", "winter_silver_medals", "winter_bronze_medals", "winter_total_medals", "total_winter_summer_games", "winter_summer_gold", "winter_summer_silver", "winter_summer_bronze", "winter_summer_total")
+attach(sum_win_oly)
+
+
+#1,2,3
+par(mfrow = c(1, 2)) # multiple histograms on one page
+# Convert variables to numeric
+sum_win_oly$num_summer_games_played <- as.numeric(sum_win_oly$num_summer_games_played)
+sum_win_oly$num_winter_games_played <- as.numeric(sum_win_oly$num_winter_games_played)
+# histogram for winter games
+hist(sum_win_oly$num_winter_games_played, main = "Histogram of Total Winter Games", 
+     xlab = "Number of Winter Games", col = "#4cbea3", labels = TRUE, 
+     border = "#FFFFFF")
+# histogram for summer games
+hist(sum_win_oly$num_summer_games_played, main = "Histogram of Total Summer Games", 
+     xlab = "Number of Summer Games", col = "#4cbea3", labels = TRUE, 
+     border = "#FFFFFF")
+
+
+
+#4
+par(mfrow = c(1, 2))
+# histogram for winter total medals won
+hist(sum_win_oly$winter_total_medals, main = "Histogram of Total Winter Medals", 
+     xlab = "Total Winter Medals", col = "#4cbea3", labels = TRUE, 
+     border = "#FFFFFF")
+
+# histogram for summer total medals won
+hist(sum_win_oly$summer_total_medals, main = "Histogram of Total Summer Medals", 
+     xlab = "Total Summer Medals", col = "#4cbea3", labels = TRUE, 
+     border = "#FFFFFF")
+
+
+
+#5
+scatter_plot_medals <- ggplot(sum_win_oly, aes(x = winter_total_medals, y = summer_total_medals)) +
+  geom_point(color = "brown", size = 3, alpha = 0.6) +
+  labs(x = "Total Winter Medals", y = "Total Summer Medals", 
+       title = "Correlation between Winter and Summer Medals") +
+  theme_minimal() +
+  geom_smooth(method = "lm", se = FALSE)
+scatter_plot_medals
+#There seems to be a slightly positive correlation between total winter medals and total summer medals
+
+
+#6
+scatter_plot_games <- ggplot(sum_win_oly, aes(x = num_winter_games_played, y = num_summer_games_played)) +
+  geom_point(color = "green", size = 3, alpha = 0.6) +
+  labs(x = "Total Winter Games", y = "Total Summer Games", 
+       title = "Correlation between Winter and Summer Games") +
+  theme_minimal() +
+  geom_smooth(method = "lm", se = FALSE)
+scatter_plot_games
+# There seems to be a slightly more significant correlation between the number of summer and winter games played compared to the medal totals.
+
+
+#7
+par(mfrow = c(2, 3))
+# histogram of gold medals won in summer with 20 breaks
+hist(sum_win_oly$summer_gold, main = "Dist Gold Medals (Summer)", 
+     xlab = "Number of Gold Medals", col = "gold", labels = TRUE, border = "black", breaks = 20)
+# histogram of silver medals won in summer
+hist(sum_win_oly$summer_silver, main = "Dist Silver Medals (Summer)", 
+     xlab = "Number of Silver Medals", col = "grey", labels = TRUE, border = "black", breaks = 20)
+# histogram of bronze medals won in summer
+hist(sum_win_oly$summer_bronze, main = "Dist Bronze Medals (Summer)", 
+     xlab = "Number of Bronze Medals", col = "brown", labels = TRUE, border = "black", breaks = 20)
+# histogram of gold medals won in winter
+hist(sum_win_oly$winter_gold_medals, main = "Dist Gold Medals (Winter)", 
+     xlab = "Number of Gold Medals", col = "gold", labels = TRUE, border = "black", breaks = 20)
+# histogram of silver medals won in winter
+hist(sum_win_oly$winter_silver_medals, main = "Dist Silver Medals (Winter)", 
+     xlab = "Number of Silver Medals", col = "grey", labels = TRUE, border = "black", breaks = 20)
+# histogram of bronze medals won in winter with
+hist(sum_win_oly$winter_bronze_medals, main = "Dist Bronze Medals (Winter)", 
+     xlab = "Number of Bronze Medals", col = "brown", labels = TRUE, border = "black", breaks = 20)
+
+
+#8
+par(mfrow = c(2, 3))
+# histogram of gold medals won in summer with 10 bins
+hist(sum_win_oly$summer_gold, main = "Dist Gold Medals (Summer)", 
+     xlab = "Number of Gold Medals", col = "gold", labels = TRUE, border = "black", breaks = 10)
+# histogram of silver medals won in summer
+hist(sum_win_oly$summer_silver, main = "Dist Silver Medals (Summer)", 
+     xlab = "Number of Silver Medals", col = "grey", labels = TRUE, border = "black", breaks = 10)
+# histogram of bronze medals won in summer
+hist(sum_win_oly$summer_bronze, main = "Dist Bronze Medals (Summer)", 
+     xlab = "Number of Bronze Medals", col = "brown", labels = TRUE, border = "black", breaks = 10)
+# histogram of gold medals won in winter
+hist(sum_win_oly$winter_gold_medals, main = "Dist Gold Medals (Winter)", 
+     xlab = "Number of Gold Medals", col = "gold", labels = TRUE, border = "black", breaks = 10)
+# histogram of silver medals won in winter
+hist(sum_win_oly$winter_silver_medals, main = "Dist Silver Medals (Winter)", 
+     xlab = "Number of Silver Medals", col = "grey", labels = TRUE, border = "black", breaks = 10)
+# histogram of bronze medals won in winter
+hist(sum_win_oly$winter_bronze_medals, main = "Dist Bronze Medals (Winter)", 
+     xlab = "Number of Bronze Medals", col = "brown", labels = TRUE, border = "black", breaks = 10)
+
+
+#9
+# Correlation between summer and winter total medals
+ggplot(sum_win_oly, aes(x = summer_total_medals, y = winter_total_medals)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(title = "Correlation between Summer and Winter Total Medals",
+       x = "Total Summer Medals", y = "Total Winter Medals")
+
